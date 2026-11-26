@@ -53,3 +53,22 @@ def analisar_alertas(motor):
         status = "CRITICO"
 
     return status, alertasS
+
+# trecho 4
+def calcular_estatisticas(motores):
+    total = len(motores)
+    if total == 0:
+        return {}
+
+    temp_media = sum(m["temperatura"] for m in motores) / total
+    corrente_media = sum(m["corrente"] for m in motores) / total
+    potencia_total = sum(m["potencia_kw"] for m in motores)
+    maior_temp = max(motores, key=lambda m: m["temperatura"])
+
+    return {
+        "total_motores": total,
+        "temperatura_media": round(temp_media, 2),
+        "corrente_media": round(corrente_media, 2),
+        "potencia_total_kw": round(potencia_total, 2),
+        "motor_mais_quente": maior_temp["id"],
+    }
