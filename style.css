@@ -1,0 +1,270 @@
+/* Paleta Institucional WEG */
+:root {
+    --weg-azul: #00579D;
+    --weg-azul-escuro: #003B6F;
+    --weg-azul-vibrante: #0072CE;
+    --weg-azul-suave: #E6F0F8;
+    --weg-fundo: #F4F6F9;
+    --weg-branco: #FFFFFF;
+    --weg-texto: #1E293B;
+    --weg-texto-suave: #475569;
+    --weg-borda: #CBD5E1;
+
+    /* Cores semânticas para status industriais */
+    --status-critico-bg: #FEF2F2;
+    --status-critico-borda: #DC2626;
+    --status-atencao-bg: #FFFBEB;
+    --status-atencao-borda: #D97706;
+    --status-normal-bg: #F0FDF4;
+    --status-normal-borda: #16A34A;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--weg-fundo);
+    color: var(--weg-texto);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Cabeçalho */
+.cabecalho {
+    background: linear-gradient(135deg, var(--weg-azul-escuro) 0%, var(--weg-azul) 100%);
+    color: var(--weg-branco);
+    padding: 48px 0 44px;
+    margin-bottom: 32px;
+    border-bottom: 5px solid var(--weg-azul-vibrante);
+}
+
+.badge-institucional {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    margin-bottom: 16px;
+}
+
+.badge-institucional .separador {
+    opacity: 0.6;
+}
+
+.cabecalho h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.subtitulo {
+    font-size: 1.05rem;
+    color: #E2E8F0;
+    max-width: 760px;
+}
+
+.cabecalho code {
+    background-color: rgba(255, 255, 255, 0.18);
+    color: var(--weg-branco);
+}
+
+/* Cards */
+.card {
+    background-color: var(--weg-branco);
+    border-radius: 8px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 59, 111, 0.06);
+    border-top: 4px solid var(--weg-azul);
+}
+
+.card h2 {
+    color: var(--weg-azul-escuro);
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+}
+
+.descricao-secao {
+    color: var(--weg-texto-suave);
+    margin-bottom: 20px;
+}
+
+code {
+    background-color: var(--weg-azul-suave);
+    color: var(--weg-azul-escuro);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 0.88em;
+    font-weight: 600;
+}
+
+/* Tabela de Limites */
+.tabela-wrapper {
+    margin-top: 22px;
+    overflow-x: auto;
+}
+
+.tabela-wrapper h3 {
+    font-size: 1.05rem;
+    color: var(--weg-azul);
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.93rem;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--weg-borda);
+}
+
+th {
+    background-color: var(--weg-azul-suave);
+    color: var(--weg-azul-escuro);
+    font-weight: 600;
+}
+
+tbody tr:hover {
+    background-color: #F8FAFC;
+}
+
+/* Grid dos 6 Trechos */
+.grid-trechos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+}
+
+.bloco-trecho {
+    background-color: var(--weg-fundo);
+    border: 1px solid var(--weg-borda);
+    border-left: 4px solid var(--weg-azul);
+    border-radius: 6px;
+    padding: 18px;
+}
+
+.trecho-header {
+    margin-bottom: 8px;
+}
+
+.numero-trecho {
+    display: inline-block;
+    background-color: var(--weg-azul);
+    color: var(--weg-branco);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+}
+
+.bloco-trecho h3 {
+    color: var(--weg-azul-escuro);
+    font-size: 1.05rem;
+}
+
+.bloco-trecho p {
+    font-size: 0.92rem;
+    color: var(--weg-texto-suave);
+}
+
+/* Diagnóstico / Resultados */
+.resultados-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.status-box {
+    padding: 16px;
+    border-radius: 6px;
+    border-left: 5px solid;
+}
+
+.status-box h4 {
+    margin: 6px 0;
+    font-size: 1rem;
+    color: var(--weg-texto);
+}
+
+.status-box p {
+    font-size: 0.9rem;
+    color: var(--weg-texto-suave);
+}
+
+.status-tag {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.status-critico {
+    background-color: var(--status-critico-bg);
+    border-color: var(--status-critico-borda);
+}
+.status-critico .status-tag { color: var(--status-critico-borda); }
+
+.status-atencao {
+    background-color: var(--status-atencao-bg);
+    border-color: var(--status-atencao-borda);
+}
+.status-atencao .status-tag { color: var(--status-atencao-borda); }
+
+.status-normal {
+    background-color: var(--status-normal-bg);
+    border-color: var(--status-normal-borda);
+}
+.status-normal .status-tag { color: var(--status-normal-borda); }
+
+/* Destaque CentroWEG */
+.destaque-centroweg {
+    background-color: var(--weg-azul-suave);
+    border-top: 4px solid var(--weg-azul-escuro);
+}
+
+.tags-local {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.tags-local span {
+    background-color: var(--weg-branco);
+    border: 1px solid var(--weg-borda);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--weg-azul-escuro);
+}
+
+/* Rodapé */
+.rodape {
+    background-color: var(--weg-azul-escuro);
+    color: #CBD5E1;
+    text-align: center;
+    padding: 22px 0;
+    margin-top: 40px;
+    font-size: 0.9rem;
+}

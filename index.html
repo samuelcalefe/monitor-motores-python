@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Motores Industriais | CentroWEG - SENAI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <div class="container">
+            <div class="badge-institucional">
+                <span>CentroWEG • SENAI</span>
+                <span class="separador">|</span>
+                <span>Jaraguá do Sul - SC</span>
+            </div>
+            <h1>Monitoramento de Motores Industriais</h1>
+            <p class="subtitulo">
+                Documentação técnica do sistema <code>monitor_industrial.py</code> (v1.0.0) — Análise de telemetria, 
+                diagnóstico de falhas e plano de manutenção preventiva.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Visão Geral -->
+        <section class="card">
+            <h2>Visão Geral da Aplicação</h2>
+            <p>
+                O programa <strong>Monitoramento de Motores Industriais</strong> processa leituras de sensores de motores 
+                elétricos alocados em diferentes setores fabris (<em>Estamparia, Usinagem, Bobinagem e Pintura</em>). 
+                A partir de parâmetros operacionais pré-definidos, o script valida os dados, classifica a severidade 
+                de anomalias, calcula indicadores consolidados da planta e gera uma fila priorizada de manutenção preventiva.
+            </p>
+
+            <div class="tabela-wrapper">
+                <h3>Parâmetros Limites Configurados (<code>LIMITES</code>)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variável Monitorada</th>
+                            <th>Parâmetro</th>
+                            <th>Limite Operacional</th>
+                            <th>Alerta Gerado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Temperatura</td>
+                            <td><code>temperatura_max</code></td>
+                            <td>80.0 °C</td>
+                            <td>Superaquecimento</td>
+                        </tr>
+                        <tr>
+                            <td>Corrente Elétrica</td>
+                            <td><code>corrente_max</code></td>
+                            <td>18.5 A</td>
+                            <td>Sobrecorrente</td>
+                        </tr>
+                        <tr>
+                            <td>Vibração Mecânica</td>
+                            <td><code>vibracao_max</code></td>
+                            <td>4.5 mm/s</td>
+                            <td>Vibração elevada</td>
+                        </tr>
+                        <tr>
+                            <td>Rotação</td>
+                            <td><code>rpm_min</code> / <code>rpm_max</code></td>
+                            <td>1400 a 1800 RPM</td>
+                            <td>Rotação fora da faixa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Explicação dos 6 Trechos -->
+        <section class="card">
+            <h2>Arquitetura do Código por Trechos</h2>
+            <p class="descricao-secao">
+                O script está organizado de forma modular em 6 blocos lógicos bem definidos:
+            </p>
+
+            <div class="grid-trechos">
+                <article class="bloco-trecho">
+                    <div class="trecho-header">
+                        <span class="numero-trecho">Trecho 1</span>
+                        <h3>Configuração e Base de Dados</h3>
+                    </div>
+                    <p>
+                        Importa o módulo <code>datetime</code>, define metadados (<code>SISTEMA_NOME</code> e <code>VERSAO</code>), 
+                        estabelece o dicionário <code>LIMITES</code> e armazena em <code>LEITURAS_MOTORES</code> os registros 
+                        dos motores (<code>MTR-01</code> a <code>MTR-04</code>) com dados de temperatura, corrente, vibração, RPM e potência (kW).
+                    </p>
+                </article>
+
+                <article class="bloco-trecho">
+                    <div class="trecho-header">
+                        <span class="numero-trecho">Trecho 2</span>
+                        <h3>Validação e Sanitização</h3>
+                    </div>
+                    <p>
+                        A função <code>validar_leitura(motor)</code> verifica a presença de todos os 7 campos obrigatórios e 
+                        bloqueia valores nulos ou negativos. Em seguida, <code>obter_leituras_validas()</code> filtra a lista 
+                        original usando <em>List Comprehension</em>.
+                    </p>
+                </article>
+
+                <article class="bloco-trecho">
+                    <div class="trecho-header">
+                        <span class="numero-trecho">Trecho 3</span>
+                        <h3>Motor de Diagnóstico e Alertas</h3>
+                    </div>
+                    <p>
+                        <code>analisar_alertas(motor)</code> cruza cada leitura com os limites operacionais e classifica o ativo em três níveis:
+                        <strong>NORMAL</strong> (0 ocorrências), <strong>ATENCAO</strong> (1 ocorrência) ou <strong>CRITICO</strong> (2 ou mais ocorrências).
+                    </p>
+                </article>
+
+                <article class="bloco-trecho">
+                    <div class="trecho-header">
+                        <span class="numero-trecho">Trecho 4</span>
+                        <h3>Cálculo de Indicadores (KPIs)</h3>
+                    </div>
+                    <p>
+                        <code>calcular_estatisticas(motores)</code> consolida a telemetria da planta: calcula o total de ativos ativos, 
+                        temperatura média, corrente média, potência total instalada (kW) e identifica o motor mais quente com <code>max()</code>.
+                    </p>
+                </article>
+
+                <article class="bloco-trecho">
+                    <div class="trecho-header">
+                        <span class="numero-trecho">Trecho 5</span>
+                        <h3>Painel de Monitoramento (CLI)</h3>
+                    </div>
+                    <p>
+                        <code>exibir_painel(motores)</code> formata a saída no terminal com timestamp em tempo real, exibindo o status 
+                        individual de cada motor, o detalhamento dos alertas ativos e o resumo estatístico geral.
+                    </p>
+                </article>
+
+                <article class="bloco-trecho">
+                    <div class="trecho-header">
+                        <span class="numero-trecho">Trecho 6</span>
+                        <h3>Plano de Manutenção Preventiva</h3>
+                    </div>
+                    <p>
+                        <code>gerar_plano_manutencao()</code> e <code>exibir_manutencao()</code> agrupam os motores por criticidade, 
+                        indicando quais exigem <strong>parada imediata</strong> (MTR-02), <strong>inspeção programada</strong> (MTR-03) 
+                        ou estão em <strong>operação estável</strong> (MTR-01 e MTR-04).
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Simulação de Saída -->
+        <section class="card">
+            <h2>Resultado da Execução (Exemplo de Saída)</h2>
+            <p class="descricao-secao">Diagnóstico gerado automaticamente com base na massa de dados atual do script:</p>
+            <div class="resultados-grid">
+                <div class="status-box status-critico">
+                    <span class="status-tag">CRÍTICO • Parada Imediata</span>
+                    <h4>MTR-02 — Usinagem (11.0 kW)</h4>
+                    <p>Superaquecimento (84.7 °C), Sobrecorrente (19.3 A) e Vibração elevada (5.2 mm/s).</p>
+                </div>
+                <div class="status-box status-atencao">
+                    <span class="status-tag">ATENÇÃO • Inspeção Programada</span>
+                    <h4>MTR-03 — Bobinagem (5.5 kW)</h4>
+                    <p>Vibração elevada (4.7 mm/s). Demais parâmetros dentro da faixa nominal.</p>
+                </div>
+                <div class="status-box status-normal">
+                    <span class="status-tag">NORMAL • Operação Estável</span>
+                    <h4>MTR-01 (Estamparia) & MTR-04 (Pintura)</h4>
+                    <p>Todos os indicadores térmicos, elétricos e mecânicos operando dentro dos limites.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contexto Institucional -->
+        <section class="card destaque-centroweg">
+            <h2>Onde este Projeto foi Desenvolvido</h2>
+            <p>
+                Este código foi desenvolvido durante minha capacitação técnica no <strong>CentroWEG</strong> — 
+                centro de formação profissional do <strong>SENAI</strong> localizado dentro do complexo industrial da 
+                <strong>WEG</strong>, em <strong>Jaraguá do Sul, Santa Catarina</strong>.
+            </p>
+            <div class="tags-local">
+                <span><strong>Ambiente:</strong> CentroWEG (SENAI)</span>
+                <span><strong>Empresa Anfitriã:</strong> WEG Equipamentos Elétricos</span>
+                <span><strong>Cidade:</strong> Jaraguá do Sul - SC</span>
+                <span><strong>Linguagem:</strong> Python 3</span>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="rodape">
+        <div class="container">
+            <p>Desenvolvido no CentroWEG • SENAI — Jaraguá do Sul, SC</p>
+        </div>
+    </footer>
+
+</body>
+</html>
