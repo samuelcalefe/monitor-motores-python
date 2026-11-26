@@ -72,3 +72,36 @@ def calcular_estatisticas(motores):
         "potencia_total_kw": round(potencia_total, 2),
         "motor_mais_quente": maior_temp["id"],
     }
+
+# trecho 5
+def exibir_painel(motores):
+    print("=" * 64)
+    print(f"{SISTEMA_NOME} - v{VERSAO}")
+    print(f"Data/Hora da leitura: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    print("=" * 64)
+
+    for motor in motores:
+        status, alertas = analisar_alertas(motor)
+        print(
+            f"[{status:<7}] {motor['id']} ({motor['setor']}) | "
+            f"Temp: {motor['temperatura']} C | Corr: {motor['corrente']} A | "
+            f"Vib: {motor['vibracao']} mm/s | RPM: {motor['rpm']}"
+        )
+        for alerta in alertas:
+            print(f"  -> Alerta: {alerta}")
+
+    stats = calcular_estatisticas(motores)
+    print("-" * 64)
+    print(
+        f"Resumo: {stats['total_motores']} motores | "
+        f"Temp. media: {stats['temperatura_media']} C | "
+        f"Corr. media: {stats['corrente_media']} A | "
+        f"Potencia total: {stats['potencia_total_kw']} kW | "
+        f"Maior temp.: {stats['motor_mais_quente']}"
+    )
+    print("=" * 64)
+
+
+if __name__ == "__main__":
+    motores_validos = obter_leituras_validas(LEITURAS_MOTORES)
+    exibir_painel(motores_validos)
