@@ -105,3 +105,25 @@ def exibir_painel(motores):
 if __name__ == "__main__":
     motores_validos = obter_leituras_validas(LEITURAS_MOTORES)
     exibir_painel(motores_validos)
+
+# trecho 6
+def gerar_plano_manutencao(motores):
+    plano = {"CRITICO": [], "ATENCAO": [], "NORMAL": []}
+    for motor in motores:
+        status, alertas = analisar_alertas(motor)
+        plano[status].append({"id": motor["id"], "setor": motor["setor"], "ocorrencias": len(alertas)})
+    return plano
+
+
+def exibir_manutencao(motores):
+    plano = gerar_plano_manutencao(motores)
+    print("\nPLANO DE MANUTENCAO PREVENTIVA:")
+    print(f" - Parada imediata (CRITICO): {[m['id'] for m in plano['CRITICO']]}")
+    print(f" - Inspecao programada (ATENCAO): {[m['id'] for m in plano['ATENCAO']]}")
+    print(f" - Operacao estavel (NORMAL): {[m['id'] for m in plano['NORMAL']]}")
+
+
+if __name__ == "__main__":
+    motores_validos = obter_leituras_validas(LEITURAS_MOTORES)
+    exibir_painel(motores_validos)
+    exibir_manutencao(motores_validos)
