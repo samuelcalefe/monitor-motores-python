@@ -52,7 +52,7 @@ def analisar_alertas(motor):
     else:
         status = "CRITICO"
 
-    return status, alertasS
+    return status, alertas
 
 # trecho 4
 def calcular_estatisticas(motores):
